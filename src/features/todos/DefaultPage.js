@@ -13,14 +13,17 @@ const { Header, Sider, Content } = Layout;
 export const formatTimestamp = (timeStamp, isReturn = false) => {
   const date = new Date(timeStamp);
   const year = date.getFullYear();
-  const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
-  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
+  const month =
+    date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
   const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-  const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-  const seconds = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
+  const minutes =
+    date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+  const seconds =
+    date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
   if (isReturn) return `${year}-${month}-${day}`;
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
+};
 
 const Loaders = () =>
   <div className="loader">
@@ -51,7 +54,9 @@ class DefaultPage extends Component {
   state = {
     collapsed: false,
     showAddArea: false,
-    content: ''
+    showEditArea: -1,
+    content: '',
+    editContent: ''
   };
   toggle = () => {
     this.setState({
@@ -66,19 +71,38 @@ class DefaultPage extends Component {
     }
   };
   delete = item => {
-      this.props.actions.updateTodoList({ id: item._id, deleted: true });
+    this.props.actions.updateTodoList({ id: item._id, deleted: true });
   };
   showAddArea = () => {
     this.setState({ showAddArea: !this.state.showAddArea });
   };
+  showEditArea = i => {
+    if (this.state.showEditArea === i) {
+      this.setState({ showEditArea: -1 });
+    } else {
+      this.setState({ showEditArea: i });
+    }
+  };
   onChangeContent = e => {
     this.setState({ content: e.target.value });
   };
-  onKeyUp = e => {
-    if (e.keyCode === 13) {
-      this.props.actions.addTodoList({ content: this.state.content });
-      this.setState({ content: '', showAddArea: false });
-    }
+  handleEditChange = e => {
+    this.setState({ editContent: e.target.value });
+  };
+  submit = () => {
+    this.props.actions.addTodoList({ content: this.state.content });
+    this.setState({ content: '', showAddArea: false });
+  };
+  editSubmit = () => {
+    const item = this.props.todoList.list[this.state.showEditArea];
+    this.props.actions.updateTodoList({
+      id: item._id,
+      content: this.state.editContent
+    });
+    this.setState({ editContent: '', showEditArea: -1 });
+  };
+  handleBlur = () => {
+    this.setState({ showEditArea: -1 });
   };
   componentDidMount() {
     this.props.actions.getTodoList();
@@ -123,23 +147,49 @@ class DefaultPage extends Component {
                   suffix={<Icon type="edit" />}
                   value={this.state.content}
                   onChange={this.onChangeContent}
-                  onKeyUp={this.onKeyUp}
+                  onPressEnter={this.submit}
                 />
               </div>}
             <div>
               <ul className="todo-list">
                 {this.props.todoList.list.map((item, i) =>
                   <li key={i}>
-                    <input type="checkbox" id={i} checked={item.finished} />
+                    <input
+                      className="checkInput"
+                      type="checkbox"
+                      id={i}
+                      checked={item.finished}
+                    />
                     <label htmlFor={i} onClick={this.update.bind(null, item)}>
-                      {item.content}
-                      <span className='time'>{formatTimestamp(new Date(item.createTime))}</span>
+                      {this.state.showEditArea !== i && item.content}
+                      {this.state.showEditArea === i &&
+                        <Input
+                          defaultValue={item.content}
+                          onClick={e => {
+                            e.stopPropagation();
+                          }}
+                          onChange={this.handleEditChange}
+                          onPressEnter={this.editSubmit}
+                          onBlur={this.handleBlur}
+                        />}
+                      {this.state.showEditArea !== i &&
+                        <span className="time">
+                          {formatTimestamp(new Date(item.createTime))}
+                        </span>}
                     </label>
-                    <div
-                      className="close"
-                      onClick={this.delete.bind(null, item)}
-                    >
-                      <Icon type="close" />
+                    <div className="option">
+                      <div
+                        className="edit"
+                        onClick={this.showEditArea.bind(null, i)}
+                      >
+                        <Icon type="edit" />
+                      </div>
+                      <div
+                        className="close"
+                        onClick={this.delete.bind(null, item)}
+                      >
+                        <Icon type="close" />
+                      </div>
                     </div>
                   </li>
                 )}
