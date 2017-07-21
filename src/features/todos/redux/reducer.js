@@ -1,8 +1,12 @@
 import initialState from './initialState';
 import { reducer as todoListReducer } from './getTodoList';
+import { reducer as updateTodoListReducer } from './updateTodoList';
+import { reducer as addTodoListReducer } from './addTodoList';
 
 const reducers = [
-  todoListReducer
+  todoListReducer,
+  updateTodoListReducer,
+  addTodoListReducer
 ];
 
 export default function reducer(state = initialState, action) {

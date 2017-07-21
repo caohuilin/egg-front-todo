@@ -26,3 +26,5 @@ const fetchBase = (endPoint = '/hello', method = 'GET', params = {}) => {
 };
 
 export const getTodoList = () => fetchBase('/todos', 'GET');
+export const updateTodoList = (params) => fetchBase('/todos', 'PUT', params);
+export const addTodoList = (params) => fetchBase('/todos', 'POST', params);

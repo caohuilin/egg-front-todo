@@ -5,12 +5,14 @@ import history from './history';
 import createSagaMiddleware from 'redux-saga';
 import sagaManager from '../features/todos/saga/sagaManager';
 import rootReducer from './rootReducer';
+import rootSaga from './rootSaga';
+
 
 const router = routerMiddleware(history);
 
 // NOTE: Do not change middleares delaration pattern since rekit plugins may register middlewares to it.
 const sagaMiddleware = createSagaMiddleware();
-const middlewares = [sagaMiddleware, router];
+const middlewares = [sagaMiddleware, router, sagaMiddleware];
 
 let devToolsExtension = f => f;
 
@@ -42,5 +44,6 @@ export default function configureStore(initialState) {
       store.replaceReducer(nextRootReducer);
     });
   }
+  sagaMiddleware.run(rootSaga);
   return store;
 }

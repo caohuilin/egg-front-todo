@@ -1,21 +1,193 @@
 .ant-layout-sider {
-  height: 100vh;
+    height: 100vh;
 }
+
 #components-layout-demo-custom-trigger .trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 16px;
-  cursor: pointer;
-  transition: color .3s;
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: color .3s;
 }
 
 #components-layout-demo-custom-trigger .trigger:hover {
-  color: #108ee9;
+    color: #108ee9;
 }
 
 #components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: #333;
-  border-radius: 6px;
-  margin: 16px;
+    height: 32px;
+    background: #333;
+    border-radius: 6px;
+    margin: 16px;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 30px;
+    cursor: pointer;
+    .anticon {
+        width: 33px;
+        height: 100%;
+        font-size: 28px;
+    }
+}
+
+.add-area {
+    height: 40px;
+    margin-top: 30px;
+    input {
+        height: 40px;
+        border: 3px solid #fff;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+    .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+        border-color: #ffffff;
+    }
+    .ant-input:focus,
+    .ant-input:hover {
+        border-color: #ffffff;
+    }
+    .ant-input-suffix {
+        right: 20px;
+        font-size: 20px;
+    }
+}
+
+.todo-list {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.todo-list li {
+    padding: 0 10px;
+    overflow-y: hidden;
+    line-height: 40px;
+    cursor: pointer;
+    border-bottom: 1px dashed #d9d9d9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .close {
+      font-size: 20px;
+    }
+    input {
+        position: absolute;
+        left: -9999px;
+    }
+    label {
+        display: block;
+        position: relative;
+        width: 400px;
+        height: 40px;
+        line-height: 0.4;
+        margin: 20px;
+        padding: 15px 30px 15px 62px;
+        border: 3px solid #fff;
+        border-radius: 100px;
+        color: #fff;
+        background-color: #6a8494;
+        box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color .2s, box-shadow .2s;
+        font-size: 1.4em/1;
+        .time {
+          font-size: 12px;
+          margin-left: 30px;
+        }
+    }
+    label::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 15px;
+        height: 15px;
+        border: 3px solid #fff;
+        border-radius: 50%;
+        transition: background-color .2s;
+    }
+    label:first-of-type {
+        transform: translateX(-40px);
+    }
+    label:last-of-type {
+        transform: translateX(40px);
+    }
+    label:hover,
+    input:focus+label {
+        box-shadow: 0 0 20px rgba(0, 0, 0, .6);
+    }
+    input:checked+label {
+        background-color: #ab576c;
+    }
+    input:checked+label::before {
+        background-color: #fff;
+    }
+    &:last-of-type {
+        border-bottom: none;
+    }
+}
+
+.loader {
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 25%;
+    max-width: 25%;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+    .pacman {
+        position: relative;
+    }
+    .pacman>div:first-of-type {
+        animation: rotate_pacman_half_up .5s 0s infinite;
+    }
+    .pacman>div:first-of-type,
+    .pacman>div:nth-child(2) {
+        width: 0;
+        height: 0;
+        border-right: 25px solid transparent;
+        border-top: 25px solid #fff;
+        border-left: 25px solid #fff;
+        border-bottom: 25px solid #fff;
+        border-radius: 25px;
+        position: relative;
+        left: -30px;
+    }
+    .pacman>div:nth-child(2) {
+        animation: rotate_pacman_half_down .5s 0s infinite;
+        margin-top: -50px
+    }
+    .pacman>div:nth-child(3),
+    .pacman>div:nth-child(4),
+    .pacman>div:nth-child(5),
+    .pacman>div:nth-child(6) {
+        background-color: #fff;
+        border-radius: 100%;
+        margin: 2px;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        transform: translate(0, -6.25px);
+        top: 25px;
+        left: 70px;
+    }
+    .pacman>div:nth-child(3) {
+        animation: pacman-balls 1s -.66s infinite linear;
+    }
+    .pacman>div:nth-child(4) {
+        animation: pacman-balls 1s -.33s infinite linear;
+    }
+    .pacman>div:nth-child(5) {
+        animation: pacman-balls 1s 0s infinite linear;
+    }
 }
